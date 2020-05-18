@@ -1,0 +1,122 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HWR Annotation Tool</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../static/hwr/css/cropper.css">
+    <link rel="stylesheet" href="../../static/hwr/css/main.css">
+</head>
+
+
+<body class="body_dark" id="body">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="http://aimagelab.unimore.it"><img
+            src="{% static 'frontend/images/AImageLab_small_white.png' %}" alt="AImageLab Logo"></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/hwr">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+
+    {% if user.is_authenticated %}
+        Benvenuto, {{ user.get_full_name }} (<a href="{% url 'logout' %}">logout</a>)
+    {% endif %}
+
+</nav>
+
+
+<div class="container-fluid">
+
+
+    <div class="row">
+        <div class="col-lg-9">
+     <div class="row d-flex justify-content-center">
+         <h1>
+             {{ page.opera.nome }}, pagina {{ page.pagina_nr }}
+         </h1>
+     </div>
+
+            <div class="d-flex justify-content-center">
+                <div class="form-group">
+                    <label for="annotation_box">Annotazione:</label>
+                    <input class="form-control" type="text" placeholder="Annotation..." id="annotation_box">
+
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary btns" id="btn_save">Save</button>
+                        <button type="button" class="btn btn-primary btns " id="btn_next_page">Next Page</button>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                <span class="navbar-text">
+                Image Shape:
+                </span>
+                        <span class="navbar-text nav-text" id="img_shape">
+                </span>
+                        <span class="navbar-text">
+                Crop Data:
+                </span>
+                        <span class="navbar-text nav-text" id="crop_shape">
+                </span>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row d-flex justify-content-center">
+                <div class="img-container">
+                    <img src="{{ page.photo.url }}" alt="Picture" id="main_picture">
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="box">
+                    {{ page.opera.scheda }}
+                    <asdfasfd></asdfasfd>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+        <label for="sel_anno">Lista Annotazioni: </label>
+                <div class="anno_box" id="sel_anno">
+                    <div class="btn-group-vertical" style="max-width: 90%">
+                    {% for ann in annotations %}
+                        <button class="btn_anno" id="{{ forloop.counter0 }}" onclick="setCropperValues(this.id)" ondblclick="resetAnnotation(this.id)"> {{ ann.annotazione }} </button>
+                    {% endfor %}
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script>
+    var CSRF_TOKEN = '{{ csrf_token }}';
+    var PAGE_ID = {{ page.id }};
+    var OPERA_ID = {{ page.opera.id }};
+    var ANNOTATIONS = {{ annotations|safe }};
+</script>
+
+<script src="../../static/hwr/js/cropper.js"></script>
+<script src="../../static/hwr/js/main.js"></script>
+
+<script>
+
+</script>
+
+</body>
+</html>

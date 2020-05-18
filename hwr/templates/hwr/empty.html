@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HWR Annotation Tool</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../static/hwr/css/main.css">
+</head>
+
+
+<body class="body_dark" id="body">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="http://aimagelab.unimore.it"><img
+            src="{% static 'frontend/images/AImageLab_small_white.png' %}" alt="AImageLab Logo"></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/hwr">Home <span class="sr-only">(current)</span></a>
+            </li>
+
+        </ul>
+    </div>
+
+    {% if user.is_authenticated %}
+        Benvenuto, {{ user.get_full_name }} (<a href="{% url 'logout' %}">logout</a>)
+    {% endif %}
+
+</nav>
+<div class="jumbotron text-center">
+    <h1>Nessuna pagina disponibile </h1>
+
+</div>
+
+</body>
+</html>

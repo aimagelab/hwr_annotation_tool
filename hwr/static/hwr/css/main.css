@@ -1,0 +1,54 @@
+.nav-text{
+  margin-right: 20px;
+}
+
+.body_dark {
+	background-color: #222;
+	color: #aaa;
+}
+
+.body_light {
+	background-color: #ccc;
+	color: #000;
+}
+
+
+.btns{
+   margin: 10px 10px 10px 10px;
+}
+
+.btn_anno{
+    margin-bottom: 5px;
+    margin-top: 5px;
+    background-color: #1a1a1a;
+    color: #aaa;
+    border-style: none;
+
+}
+
+.box
+{
+  margin: 50px 10px 10px 10px;
+  max-width: 100%;
+  max-height: 320px;
+  overflow:auto;
+}
+
+.anno_box{
+    max-width: 100%;
+    max-height: 640px;
+    overflow:auto;
+}
+
+.img-container {
+  width: 100%;
+  max-height:320px;
+}
+
+.img-container > img {
+  max-width: 100%;
+}
+
+.form-control{
+    width: 960px;
+}

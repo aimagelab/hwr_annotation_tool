@@ -1,0 +1,146 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HWR Annotation Tool</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="../../static/hwr/css/main.css">
+
+<style>
+    .img-r {
+        width: 192px;
+        height: auto;
+    }
+    .img-an{
+        border: 5px groove darkgreen;
+    }
+    .img-an{
+        border: 5px groove darkred;
+    }
+</style>
+
+</head>
+
+
+<body class="body_dark" id="body">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="http://aimagelab.unimore.it"><img
+            src="{% static 'frontend/images/AImageLab_small_white.png' %}" alt="AImageLab Logo"></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/hwr">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+    </ul>
+  </div>
+
+        {% if user.is_authenticated %}
+            Benvenuto, {{ user.get_full_name }} (<a href="{% url 'logout' %}">logout</a>)
+        {% endif %}
+
+</nav>
+
+<div class="container">
+
+    <div class="d-flex justify-content-center">
+
+    <div class="form-group">
+        <label for="sel_op">Seleziona Opera:</label>
+            <select class="form-control" id="sel_op">
+        <option value="" title="" data-content="class='reset-label'></span>"></option>
+            {% for ar in artisti %}
+                <optgroup label={{ ar.nome }}>
+                {% for op in opere %}
+                    {% if ar == op.autore %}
+                    <option class="dropdown-item" href="#" id="{{op.id}}">{{ op }}</option>
+                    {% endif %}
+                {% endfor %}
+                </optgroup>
+              {% endfor %}
+        </select>
+    </div>
+
+    </div>
+
+
+    {% for rw in pagine  %}
+        <div class="row">
+            {% for p in rw %}
+              <div class="col">
+                    {% if p.done %}
+                     <img class="img-r img-an" src="{{ p.photo.url }}" id="{{ p.id }}" onclick="getThis(this.id)">
+                    {% else %}
+                        <img class="img-r img-na" src="{{ p.photo.url }}" id="{{ p.id }}" onclick="getThis(this.id)">
+                    {% endif %}
+              </div>
+
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>
+
+<!-- Scripts -->
+<script>
+    var CSRF_TOKEN = '{{ csrf_token }}';
+    var page_id = null;
+    var selectedOpera = null;
+    var selectBox = document.getElementById("sel_op");
+
+    function submitForm(target, method){
+
+        var form = document.createElement("form");
+        var element1 = document.createElement("input");
+        var element2 = document.createElement("input");
+        var element3 = document.createElement("input");
+
+        form.method = method;
+        form.action = target;
+
+        element1.value=selectedOpera;
+        element1.name="opera_id";
+        element2.value=page_id;
+        element2.name="page_id";
+        element3.type = 'hidden';
+        element3.value=CSRF_TOKEN;
+        element3.name="csrfmiddlewaretoken";
+        form.appendChild(element1);
+        form.appendChild(element2);
+        form.appendChild(element3);
+
+        document.body.appendChild(form);
+
+        form.submit();
+    }
+
+    selectBox.onclick = function(){
+        selectedOpera = selectBox.options[selectBox.selectedIndex].id;
+        submitForm("/hwr", "get");
+    }
+
+    function getThis(new_page_id)
+    {
+        selectedOpera = {{ selectedOpera }}
+        page_id = new_page_id;
+        submitForm("/hwr/annota/", "post")
+
+    }
+
+</script>
+
+</body>
+</html>
